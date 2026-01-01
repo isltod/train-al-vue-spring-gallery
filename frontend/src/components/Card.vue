@@ -1,31 +1,44 @@
 <script setup>
-const props = defineProps({
-  item: Object,
-})
+  import {computed, ref} from "vue";
+
+  const props = defineProps({
+    item: Object,
+  })
+
+  const realPrice = computed(() => {
+    return (1 - props.item.discountPer / 100) * props.item.price
+  })
 </script>
 
 <template>
   <div class="card shadow-sm">
-    <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg"
-         role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice"
-         focusable="false"><title>Placeholder</title>
-      <rect width="100%" height="100%" fill="#55595c"/>
-      <text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text>
-    </svg>
-
+    <span class="img" :style="{backgroundImage: `url(${item.imgPath})`}"/>
     <div class="card-body">
-      <p class="card-text">{{item.name}}</p>
+      <p class="card-text">
+        <span>{{ item.name }} &nbsp;</span>
+        <span class="discount badge bg-danger">{{ item.discountPer.toLocaleString() }}%</span>
+      </p>
       <div class="d-flex justify-content-between align-items-center">
         <div class="btn-group">
-          <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
-          <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
+          <button class="btn btn-primary">구입하기</button>
         </div>
-        <small class="text-muted">9 mins</small>
+        <small class="price text-muted">{{ item.price.toLocaleString() }} 원</small>
+        <small class="real text-danger">{{ realPrice.toLocaleString() }} 원</small>
       </div>
     </div>
   </div>
 </template>
 
 <style scoped>
+  .card .img {
+    display: flex;
+    width: 100%;
+    height: 250px;
+    background-size: cover;
+    background-position: center;
+  }
 
+  .card .price {
+    text-decoration: line-through;
+  }
 </style>
