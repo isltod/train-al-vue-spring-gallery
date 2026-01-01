@@ -10,9 +10,17 @@ public class Item {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     private int id;
 
-    @Column(name = "name", length = 50, nullable = false)
+    @Column(length = 50, nullable = false)
     private String name;
+
+    @Column(length = 100)
+    private String imgPath;
+
+    @Column
+    private int price;
+
+    @Column
+    private int discountPer;
 }
