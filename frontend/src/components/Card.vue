@@ -1,6 +1,6 @@
 <script setup>
 const props = defineProps({
-  item: String,
+  item: Object,
 })
 </script>
 
@@ -14,7 +14,7 @@ const props = defineProps({
     </svg>
 
     <div class="card-body">
-      <p class="card-text">{{item}}</p>
+      <p class="card-text">{{item.name}}</p>
       <div class="d-flex justify-content-between align-items-center">
         <div class="btn-group">
           <button type="button" class="btn btn-sm btn-outline-secondary">View</button>

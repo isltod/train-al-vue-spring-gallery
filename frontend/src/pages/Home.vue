@@ -3,7 +3,9 @@ import Card from "@/components/Card.vue";
 import axios from "axios";
 import {ref} from "vue";
 const items = ref([])
-axios.get("/api/items").then(({data}) => {items.value = data;});
+axios.get("/api/items").then(({data}) => {
+  items.value = data;
+});
 </script>
 
 <template>
