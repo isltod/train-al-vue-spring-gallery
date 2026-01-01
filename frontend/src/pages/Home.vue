@@ -1,6 +1,9 @@
 <script setup>
-
 import Card from "@/components/Card.vue";
+import axios from "axios";
+import {ref} from "vue";
+const items = ref([])
+axios.get("/api/items").then(({data}) => {items.value = data;});
 </script>
 
 <template>
@@ -23,8 +26,8 @@ import Card from "@/components/Card.vue";
       <div class="container">
 
         <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-          <div class="col" v-for="i in 12" key="index">
-            <Card/>
+          <div class="col" v-for="(item, index) in items" key="index">
+            <Card :item="item" />
           </div>
         </div>
       </div>
