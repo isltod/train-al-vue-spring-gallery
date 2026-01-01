@@ -6,8 +6,8 @@ import Home from "@/pages/Home.vue";
 
 <template>
   <Header/>
-  <!-- <RouterView/> -->
-  <Home/>
+  <RouterView/>
+  <!-- <Home/> -->
   <Footer/>
 </template>
 
