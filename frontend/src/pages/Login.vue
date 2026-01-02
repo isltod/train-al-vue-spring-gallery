@@ -8,6 +8,7 @@
 
   const logIn = () => {
     axios.post("/api/account/login", user.value).then((response) => {
+      console.log(response);
       // F5에 store 저장값이 날아가서 sessionStorage를 쓴다고? 그럼 결국 여기서 store는 필요 없다는 얘기 아냐?
       store.commit("setUserId", response.data);
       sessionStorage.setItem("userId", response.data);
