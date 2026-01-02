@@ -2,11 +2,21 @@
   import Header from "@/components/Header.vue";
   import Footer from "@/components/Footer.vue";
   import store from "@/scripts/store.js";
-  // 어차피sessionStorage 밖에는 믿을 수 없는데 store는 왜 쓰는 거지?
-  const userId = sessionStorage.getItem("userId");
-  if (userId) {
-    store.commit("setUserId", userId);
+  import axios from "axios";
+  import {useRoute} from "vue-router";
+  import {watch} from "vue";
+
+  const checkAccount = () => {
+    axios.get("/api/account/check").then((response) => {
+      store.commit("setUserId", response.data || 0);
+    })
   }
+
+  const route = useRoute();
+
+  watch(route, (newRoute, oldRoute) => {
+    checkAccount();
+  });
 </script>
 
 <template>

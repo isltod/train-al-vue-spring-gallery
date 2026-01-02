@@ -1,12 +1,12 @@
 package com.gallery.backend.service;
 
-import io.jsonwebtoken.JwtBuilder;
-import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SignatureAlgorithm;
 import jakarta.xml.bind.DatatypeConverter;
 import org.springframework.stereotype.Service;
 
+import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
@@ -49,5 +49,26 @@ public class JwtServiceImpl implements JwtService {
                 .signWith(secretKey)
                 .compact();
         return jws;
+    }
+
+    @Override
+    public Claims getClaims(String token) {
+        if (token != null && !token.equals("")) {
+            try {
+                SecretKey secretKey = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
+                return Jwts.parser().verifyWith(secretKey)
+                        .build()
+                        .parseSignedClaims(token)
+                        .getPayload();
+            } catch (ExpiredJwtException e) {
+                // 만료된 토큰 오류
+                e.printStackTrace();
+            } catch (JwtException e) {
+                // 유효하지 않은 토큰 오류
+                e.printStackTrace();
+            }
+        }
+        // 암튼 뭔가 잘못되면 null 반환
+        return null;
     }
 }
