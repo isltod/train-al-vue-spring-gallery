@@ -1,11 +1,20 @@
 <script setup>
 import Card from "@/components/Card.vue";
 import axios from "axios";
-import {ref} from "vue";
+import {onMounted, ref} from "vue";
+
 const items = ref([])
-axios.get("/api/items").then(({data}) => {
-  items.value = data;
-});
+
+const getItems = async () => {
+  axios.get("/api/items").then(({data}) => {
+    items.value = data;
+  });
+}
+
+onMounted(() => {
+  getItems();
+})
+
 </script>
 
 <template>
