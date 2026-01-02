@@ -71,4 +71,22 @@ public class JwtServiceImpl implements JwtService {
         // 암튼 뭔가 잘못되면 null 반환
         return null;
     }
+
+    // 아래 두 개가 로그인이 된 사용자인지 백엔드에서 보는 기능인가보다...
+    @Override
+    public boolean isValid(String token) {
+        if (getClaims(token) != null) {
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public int getId(String token) {
+        Claims claims = getClaims(token);
+        if (claims != null) {
+            return (int) claims.get("id");
+        }
+        return 0;
+    }
 }

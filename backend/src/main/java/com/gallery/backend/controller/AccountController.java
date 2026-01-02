@@ -51,12 +51,8 @@ public class AccountController {
 
     @GetMapping(path = "/api/account/check")
     public ResponseEntity<Object> check(@CookieValue(value = "token", required = false) String token) {
-        Claims claims = jwtService.getClaims(token);
-        if (claims != null) {
-            int id = (int) claims.get("id");
-            return new ResponseEntity<>(id, HttpStatus.OK);
-        }
-        return new ResponseEntity<>("", HttpStatus.OK);
+        int memberId = jwtService.getId(token);
+        return new ResponseEntity<>(memberId, HttpStatus.OK);
     }
 
     @PostMapping(path = "/api/account/logout")

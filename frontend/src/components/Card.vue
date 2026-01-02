@@ -1,5 +1,6 @@
 <script setup>
   import {computed, ref} from "vue";
+  import axios from "axios";
 
   const props = defineProps({
     item: Object,
@@ -8,6 +9,12 @@
   const realPrice = computed(() => {
     return (1 - props.item.discountPer / 100) * props.item.price
   })
+
+  const addItemToCart = (itemId) => {
+    axios.post(`/api/cart/items/${itemId}`).then((response) => {
+      console.log("success");
+    })
+  }
 </script>
 
 <template>
@@ -20,7 +27,9 @@
       </p>
       <div class="d-flex justify-content-between align-items-center">
         <div class="btn-group">
-          <button class="btn btn-primary">구입하기</button>
+          <button class="btn btn-primary" @click="addItemToCart(item.id)">
+            <i class="fa fa-cart-plus" aria-hidden="true"></i>
+          </button>
         </div>
         <small class="price text-muted">{{ item.price.toLocaleString() }} 원</small>
         <small class="real text-danger">{{ realPrice.toLocaleString() }} 원</small>

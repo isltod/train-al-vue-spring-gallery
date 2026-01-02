@@ -8,7 +8,7 @@
 
   const checkAccount = () => {
     axios.get("/api/account/check").then((response) => {
-      store.commit("setUserId", response.data || 0);
+      store.commit("setUserId", response.data);
     })
   }
 
