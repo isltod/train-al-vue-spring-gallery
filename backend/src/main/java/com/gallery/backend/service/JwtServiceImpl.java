@@ -1,0 +1,53 @@
+package com.gallery.backend.service;
+
+import io.jsonwebtoken.JwtBuilder;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.security.Keys;
+import io.jsonwebtoken.security.SignatureAlgorithm;
+import jakarta.xml.bind.DatatypeConverter;
+import org.springframework.stereotype.Service;
+
+import javax.crypto.spec.SecretKeySpec;
+import java.nio.charset.StandardCharsets;
+import java.security.Key;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
+@Service("jwtService")
+public class JwtServiceImpl implements JwtService {
+
+    private String secret = "few@#$gad$h46ysdagh$@^&&$sdaseg#$2235#36eesdadasgvyh";
+
+    @Override
+    public String getToken(String key, Object value) {
+        // 1. 헤더 만들기
+        Map<String, Object> headerMap = new HashMap<>();
+        headerMap.put("alg", "HS256");
+        headerMap.put("typ", "JWT");
+
+        // 2. 사용자 페이로드? 만들어?
+        Map<String, Object> map = new HashMap<>();
+        map.put(key, value);
+
+        // 3. 만료 기간
+        Date expTime = new Date();
+        expTime.setTime(expTime.getTime() + 1000 * 60 * 30);
+
+        // 4. 서명 키 만들기
+        // byte[] bytes = DatatypeConverter.parseBase64Binary(secret);
+        // Key secretKey = new SecretKeySpec(bytes, "HmacSHA256");
+        // 이것도 버려져서 위처럼 하면 안된다..아래처럼 하는게 맞고, 더 간단하다...
+        Key secretKey = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
+
+        // 5. 그리고 토큰인가? 문법이 바뀌어서...
+        String jws = Jwts.builder()
+                .header().add(headerMap)
+                .and()
+                .claim(key, value)
+                .expiration(expTime)
+                .signWith(secretKey)
+                .compact();
+        return jws;
+    }
+}

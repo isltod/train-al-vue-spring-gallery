@@ -27,6 +27,12 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-webmvc-test'
     runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    // JWT 토큰?
+    implementation("io.jsonwebtoken:jjwt-api:0.13.0")
+    runtimeOnly("io.jsonwebtoken:jjwt-impl:0.13.0")
+    runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.13.0")
+    // 이것도 deprecated도 아니고 심지어 지워진 의존성을 써서...
+    implementation("jakarta.xml.bind:jakarta.xml.bind-api:4.0.4")
 }
 
 tasks.named('test') {
