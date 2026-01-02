@@ -1,13 +1,20 @@
 <script setup>
   import {ref} from "vue";
   import axios from "axios";
+  import store from "@/scripts/store.js";
+  import router from "@/router/index.js";
 
   const user = ref({email: "", password: ""});
 
   const logIn = () => {
     axios.post("/api/account/login", user.value).then((response) => {
-      console.log(response);
+      // F5에 store 저장값이 날아가서 sessionStorage를 쓴다고? 그럼 결국 여기서 store는 필요 없다는 얘기 아냐?
+      store.commit("setUserId", response.data);
+      sessionStorage.setItem("userId", response.data);
+      router.push({path: "/"});
       alert("로그인 했습니다.");
+    }).catch((error) => {
+      window.alert("사용자 정보가 없습니다.")
     })
   }
 
@@ -20,11 +27,11 @@
   <div class="form-signin w-100 m-auto">
     <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
     <div class="form-floating">
-      <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com" v-model="user.email" />
+      <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com" v-model="user.email"/>
       <label for="floatingInput">Email address</label>
     </div>
     <div class="form-floating">
-      <input type="password" class="form-control" id="floatingPassword" placeholder="Password" v-model="user.password" />
+      <input type="password" class="form-control" id="floatingPassword" placeholder="Password" v-model="user.password"/>
       <label for="floatingPassword">Password</label>
     </div>
     <div class="form-check text-start my-3">
@@ -32,7 +39,7 @@
       <label class="form-check-label" for="checkDefault">Remember me
       </label>
     </div>
-    <button class="btn btn-primary w-100 py-2" @click="logIn" >Sign in</button>
+    <button class="btn btn-primary w-100 py-2" @click="logIn">Sign in</button>
     <p class="mt-5 mb-3 text-body-secondary">&copy;2017–2025</p>
   </div>
 </template>
