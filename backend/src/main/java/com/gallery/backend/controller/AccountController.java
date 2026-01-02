@@ -3,6 +3,7 @@ package com.gallery.backend.controller;
 import com.gallery.backend.entity.Member;
 import com.gallery.backend.repository.MemberRepository;
 import com.gallery.backend.service.JwtService;
+import io.jsonwebtoken.Claims;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,5 +47,24 @@ public class AccountController {
         // 그래서 이걸 서버에 두려고 새로 만들어 id만 넣어서 보낸다?
         // 그럼 다음에 서버에 뭘 달라고 할 때는 로그인 한 상태인지 어떻게 알지?
         return new ResponseEntity<>(id, HttpStatus.OK);
+    }
+
+    @GetMapping(path = "/api/account/check")
+    public ResponseEntity<Object> check(@CookieValue(value = "token", required = false) String token) {
+        Claims claims = jwtService.getClaims(token);
+        if (claims != null) {
+            int id = (int) claims.get("id");
+            return new ResponseEntity<>(id, HttpStatus.OK);
+        }
+        return new ResponseEntity<>("", HttpStatus.OK);
+    }
+
+    @PostMapping(path = "/api/account/logout")
+    public ResponseEntity<Object> logout(HttpServletResponse response) {
+        Cookie cookie = new Cookie("token", null);
+        cookie.setPath("/");
+        cookie.setMaxAge(0);
+        response.addCookie(cookie);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

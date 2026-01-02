@@ -1,11 +1,13 @@
 <script setup>
   import store from "@/scripts/store.js";
   import router from "@/router/index.js";
+  import axios from "axios";
 
   const logOut = () => {
-    store.commit("setUserId", 0);
-    sessionStorage.removeItem("userId");
-    router.push({ path: "/" });
+    axios.post("/api/account/logout").then((response) => {
+      store.commit("setUserId", 0);
+      router.push({path: "/"});
+    })
   }
 </script>
 
@@ -18,6 +20,7 @@
             <h4 class="text-white">사이트 맵</h4>
             <ul class="list-unstyled">
               <li><RouterLink to="/" class="text-white">메인 화면</RouterLink></li>
+              <li><RouterLink to="/about" class="text-white">About</RouterLink></li>
               <li>
                 <RouterLink to="/login" class="text-white" v-if="!$store.state.userId">로그인</RouterLink>
                 <RouterLink to="/login" class="text-white" @click="logOut" v-else>로그아웃</RouterLink>
