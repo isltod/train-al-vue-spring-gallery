@@ -21,6 +21,7 @@
             <ul class="list-unstyled">
               <li><RouterLink to="/" class="text-white">메인 화면</RouterLink></li>
               <li><RouterLink to="/about" class="text-white">About</RouterLink></li>
+              <li><RouterLink to="/orderlist" class="text-white">주문 내역</RouterLink></li>
               <li>
                 <RouterLink to="/login" class="text-white" v-if="!$store.state.userId">로그인</RouterLink>
                 <RouterLink to="/login" class="text-white" @click="logOut" v-else>로그아웃</RouterLink>
